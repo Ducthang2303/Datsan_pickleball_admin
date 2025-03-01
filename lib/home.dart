@@ -35,15 +35,11 @@ class HomeScreen extends StatelessWidget {
           SizedBox(height: 20),
           Expanded(
             child: GridView.count(
-              crossAxisCount: 3,
+              crossAxisCount: 2,
               children: [
-                _buildGridItem('Xem trạng thái sân', Icons.grid_on, Colors.orange),
-                _buildGridItem('Bán hàng', Icons.store, Colors.orangeAccent),
-                _buildGridItem('Quản lý dịch vụ', Icons.room_service, Colors.redAccent),
+                _buildGridItem('Quản lý sân', Icons.grid_on, Colors.orange),
                 _buildGridItem('Thống kê', Icons.bar_chart, Colors.pinkAccent),
-                _buildGridItem('Quản lý chi nhánh', Icons.account_tree, Colors.green),
                 _buildGridItem('Quản lý khách hàng', Icons.people, Colors.blueAccent),
-                _buildGridItem('Quản lý voucher', Icons.card_giftcard, Colors.purpleAccent),
                 _buildGridItem('Quản lý đơn tháng', Icons.calendar_today, Colors.deepPurpleAccent),
               ],
             ),

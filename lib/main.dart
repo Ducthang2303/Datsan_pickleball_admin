@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'booking.dart';
+import 'approve.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,7 +28,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = [
     HomeScreen(),
     BookingScreen(),
-    Center(child: Text('Duyệt đơn', style: TextStyle(fontSize: 24))),
+    ApproveScreen(),
   ];
 
   void _onItemTapped(int index) {

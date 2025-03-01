@@ -13,7 +13,7 @@ class _BookingScreenState extends State<BookingScreen> {
       backgroundColor: AppColors.textColor,
       appBar: AppBar(
         backgroundColor: AppColors.Blue,
-        title: Text('Đặt lịch'),
+        title: Text('Đặt lịch',style: TextStyle(color: AppColors.textColor),),
         centerTitle: true,
       ),
       body: Column(
