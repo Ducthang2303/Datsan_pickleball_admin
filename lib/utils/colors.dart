@@ -7,4 +7,5 @@ class AppColors {
   static const Color textColor = Colors.white; // Màu chữ trắng
   static const Color buttonColor = Color(0xFF00C853); // Màu nút xanh
   static const Color pendingColor = Color(0xFFFF0000); // Màu đỏ (Chưa cọc)
+  static const Color Black = Color(0xFF1E1C1C);
 }
