@@ -62,7 +62,7 @@ class _HoaDonListScreenState extends State<DuyetdonScreen> with SingleTickerProv
       }
       final userId = user.uid;
 
-      // Fetch Khu list for the user
+
       _khuList = await _sanKhuService.getKhuByUserId(userId);
       print('Fetched khuList: ${_khuList.map((k) => k.id).toList()}');
 
@@ -97,7 +97,7 @@ class _HoaDonListScreenState extends State<DuyetdonScreen> with SingleTickerProv
     try {
       List<HoaDon> result;
 
-      // If no Khu or date is selected, return empty list
+
       if (_selectedKhu == null || _khuList.isEmpty || _selectedDate == null) {
         setState(() {
           _hoaDonList = [];
@@ -106,7 +106,6 @@ class _HoaDonListScreenState extends State<DuyetdonScreen> with SingleTickerProv
         return;
       }
 
-      // Fetch invoices based on selected tab, Khu, and date
       switch (_tabController.index) {
         case 0: // All invoices
           result = await _hoaDonService.getHoaDonByKhuListAndDate([_selectedKhu!.id], _selectedDate!);

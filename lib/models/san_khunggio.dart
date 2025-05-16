@@ -11,7 +11,7 @@ class SanKhungGio {
     required this.khungGio,
   });
 
-  // Chuyển từ Map Firestore sang Object
+
   factory SanKhungGio.fromMap(Map<String, dynamic> map, String id) {
     return SanKhungGio(
       maSan: map["MA_SAN"] ?? "",
@@ -23,7 +23,7 @@ class SanKhungGio {
 
 
 
-  // Chuyển Object thành Map để lưu vào Firestore
+
   Map<String, dynamic> toMap() {
     return {
       "MA_SAN": maSan,

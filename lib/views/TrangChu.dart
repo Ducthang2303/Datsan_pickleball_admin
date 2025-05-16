@@ -48,7 +48,7 @@ class HomeScreen extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              const SizedBox(height: 15), // Removed redundant padding widget
+              const SizedBox(height: 15),
               Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
@@ -78,7 +78,7 @@ class HomeScreen extends StatelessWidget {
                       'Duyệt đơn',
                       Icons.calendar_today,
                       Colors.deepPurpleAccent,
-                          () => _navigateToScreen(const DuyetdonScreen()), // Updated to match new constructor
+                          () => _navigateToScreen(const DuyetdonScreen()),
                     ),
                   ],
                 ),

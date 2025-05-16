@@ -10,7 +10,7 @@ class DefaultLayout extends StatelessWidget {
 
 
   final List<Widget> screens = [
-      // Màn hình Home
+
 
   ];
 
@@ -46,7 +46,7 @@ class DefaultLayout extends StatelessWidget {
   }
 }
 
-// Controller để quản lý trạng thái tab hiện tại
+
 class NavigationController extends GetxController {
   var currentIndex = 0;
 

@@ -37,7 +37,7 @@ class HoaDon {
   final String tenSan;
   final String tenKhu;
   final List<KhungGioHoaDon> khungGio;
-  final int giaTien; // Changed to int to match HoaDonService
+  final int giaTien;
   final String? anhChuyenKhoan;
   final String trangThai;
   final DateTime? thoiGianTao;
@@ -58,14 +58,12 @@ class HoaDon {
   });
 
   factory HoaDon.fromMap(Map<String, dynamic> data, String documentId) {
-    // Handle both old and new Firestore document structures
     List<KhungGioHoaDon> khungGio = [];
     if (data['khungGio'] != null) {
       khungGio = (data['khungGio'] as List<dynamic>)
           .map((item) => KhungGioHoaDon.fromMap(item))
           .toList();
     } else if (data['ngay'] != null) {
-      // Backward compatibility for old documents
       khungGio = [
         KhungGioHoaDon(
           ngay: data['ngay'] ?? '',

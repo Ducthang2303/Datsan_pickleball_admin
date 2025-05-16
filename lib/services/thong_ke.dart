@@ -5,27 +5,27 @@ import 'package:pickleball_admin/models/hoa_don.dart';
 class DoanhThuThongKeService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Lấy tổng doanh thu của tháng hiện tại
+
   Future<double> getDoanhThuThangHienTai({String? maKhu}) async {
     final DateTime now = DateTime.now();
     return getDoanhThuTheoThang(now.month, now.year, maKhu: maKhu);
   }
 
-  // Lấy tổng doanh thu theo tháng và năm cụ thể
+
   Future<double> getDoanhThuTheoThang(int thang, int nam, {String? maKhu}) async {
     try {
-      // Tạo ngày đầu tiên và ngày cuối cùng của tháng
+
       final DateTime ngayDauThang = DateTime(nam, thang, 1);
       final DateTime ngayCuoiThang = (thang < 12)
           ? DateTime(nam, thang + 1, 1).subtract(Duration(days: 1))
           : DateTime(nam + 1, 1, 1).subtract(Duration(days: 1));
 
-      // Chuyển đổi sang Timestamp cho Firestore
+
       final Timestamp timestampBatDau = Timestamp.fromDate(ngayDauThang);
       final Timestamp timestampKetThuc = Timestamp.fromDate(
           DateTime(ngayCuoiThang.year, ngayCuoiThang.month, ngayCuoiThang.day, 23, 59, 59));
 
-      // Truy vấn Firestore để lấy các hóa đơn đã duyệt trong tháng
+
       Query query = _firestore
           .collection('HOA_DON')
           .where('trangThai', isEqualTo: 'Đã duyệt')
@@ -39,7 +39,7 @@ class DoanhThuThongKeService {
 
       final QuerySnapshot querySnapshot = await query.get();
 
-      // Tính tổng doanh thu
+
       double tongDoanhThu = 0;
       for (var doc in querySnapshot.docs) {
         final hoaDon = HoaDon.fromMap(doc.data() as Map<String, dynamic>, doc.id);
@@ -53,21 +53,21 @@ class DoanhThuThongKeService {
     }
   }
 
-  // Lấy danh sách các hóa đơn đã duyệt trong tháng
+
   Future<List<HoaDon>> getDanhSachHoaDonDaDuyetTheoThang(int thang, int nam, {String? maKhu}) async {
     try {
-      // Tạo ngày đầu tiên và ngày cuối cùng của tháng
+
       final DateTime ngayDauThang = DateTime(nam, thang, 1);
       final DateTime ngayCuoiThang = (thang < 12)
           ? DateTime(nam, thang + 1, 1).subtract(Duration(days: 1))
           : DateTime(nam + 1, 1, 1).subtract(Duration(days: 1));
 
-      // Chuyển đổi sang Timestamp cho Firestore
+
       final Timestamp timestampBatDau = Timestamp.fromDate(ngayDauThang);
       final Timestamp timestampKetThuc = Timestamp.fromDate(
           DateTime(ngayCuoiThang.year, ngayCuoiThang.month, ngayCuoiThang.day, 23, 59, 59));
 
-      // Truy vấn Firestore để lấy các hóa đơn đã duyệt trong tháng
+
       Query query = _firestore
           .collection('HOA_DON')
           .where('trangThai', isEqualTo: 'Đã duyệt')
@@ -99,16 +99,16 @@ class DoanhThuThongKeService {
     try {
       final danhSachHoaDon = await getDanhSachHoaDonDaDuyetTheoThang(thang, nam, maKhu: maKhu);
 
-      // Map để lưu doanh thu theo ngày
+
       Map<int, double> doanhThuTheoNgay = {};
 
-      // Khởi tạo giá trị 0 cho tất cả các ngày trong tháng
+
       final daysInMonth = DateTime(nam, thang + 1, 0).day;
       for (int i = 1; i <= daysInMonth; i++) {
         doanhThuTheoNgay[i] = 0;
       }
 
-      // Tổng hợp doanh thu theo từng ngày
+
       for (var hoaDon in danhSachHoaDon) {
         if (hoaDon.thoiGianTao != null) {
           final ngay = hoaDon.thoiGianTao!.day;
@@ -123,15 +123,15 @@ class DoanhThuThongKeService {
     }
   }
 
-  // Thống kê doanh thu theo khu vực trong tháng
+
   Future<Map<String, double>> getDoanhThuTheoKhuVuc(int thang, int nam, {String? maKhu}) async {
     try {
       final danhSachHoaDon = await getDanhSachHoaDonDaDuyetTheoThang(thang, nam, maKhu: maKhu);
 
-      // Map để lưu doanh thu theo khu vực
+
       Map<String, double> doanhThuTheoKhuVuc = {};
 
-      // Tổng hợp doanh thu theo từng khu vực
+
       for (var hoaDon in danhSachHoaDon) {
         final tenKhu = hoaDon.tenKhu;
         doanhThuTheoKhuVuc[tenKhu] = (doanhThuTheoKhuVuc[tenKhu] ?? 0) + hoaDon.giaTien;
@@ -144,7 +144,7 @@ class DoanhThuThongKeService {
     }
   }
 
-  // Tìm ngày có doanh thu cao nhất trong tháng
+
   Future<Map<String, dynamic>> getNgayCoDoanhThuCaoNhatTrongThang(int thang, int nam, {String? maKhu}) async {
     try {
       final doanhThuTheoNgay = await getDoanhThuTheoNgayTrongThang(thang, nam, maKhu: maKhu);
@@ -153,7 +153,7 @@ class DoanhThuThongKeService {
         return {'ngay': 0, 'doanhThu': 0.0};
       }
 
-      // Tìm ngày có doanh thu cao nhất
+
       int ngayCaoNhat = 1;
       double doanhThuCaoNhat = 0;
 
@@ -171,7 +171,7 @@ class DoanhThuThongKeService {
     }
   }
 
-  // Lấy tổng số hóa đơn đã duyệt trong tháng
+
   Future<int> getTongSoHoaDonDaDuyetTrongThang(int thang, int nam, {String? maKhu}) async {
     try {
       final danhSachHoaDon = await getDanhSachHoaDonDaDuyetTheoThang(thang, nam, maKhu: maKhu);
@@ -182,7 +182,7 @@ class DoanhThuThongKeService {
     }
   }
 
-  // Lấy giá trị trung bình của hóa đơn trong tháng
+
   Future<double> getGiaTriTrungBinhHoaDonTrongThang(int thang, int nam, {String? maKhu}) async {
     try {
       final danhSachHoaDon = await getDanhSachHoaDonDaDuyetTheoThang(thang, nam, maKhu: maKhu);
@@ -203,7 +203,7 @@ class DoanhThuThongKeService {
     }
   }
 
-  // So sánh doanh thu giữa hai tháng
+
   Future<Map<String, dynamic>> soSanhDoanhThuHaiThang(
       int thang1, int nam1, int thang2, int nam2, {String? maKhu}) async {
     try {

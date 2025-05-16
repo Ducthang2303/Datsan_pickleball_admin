@@ -20,7 +20,7 @@ class ThongKeDoanhThuController with ChangeNotifier {
   int _nam = DateTime.now().year;
   String? _errorMessage;
 
-  // Getters
+
   bool get isLoading => _isLoading;
   double get tongDoanhThu => _tongDoanhThu;
   int get tongDonHang => _tongDonHang;
@@ -31,7 +31,7 @@ class ThongKeDoanhThuController with ChangeNotifier {
   int get nam => _nam;
   String? get errorMessage => _errorMessage;
 
-  // Currency formatter
+
   final formatCurrency = NumberFormat.currency(locale: 'vi_VN', symbol: '₫');
 
   ThongKeDoanhThuController() {
@@ -88,14 +88,14 @@ class ThongKeDoanhThuController with ChangeNotifier {
 
       print('Loading data for khu: ${_selectedKhu!.id}, thang: $_thang, nam: $_nam');
 
-      // Fetch monthly revenue
+
       final doanhThu = await _thongKeService.getDoanhThuTheoThang(_thang, _nam, maKhu: _selectedKhu!.id);
 
-      // Fetch total approved invoices
+
       final tongDonHang =
       await _thongKeService.getTongSoHoaDonDaDuyetTrongThang(_thang, _nam, maKhu: _selectedKhu!.id);
 
-      // Fetch daily revenue
+
       final doanhThuNgay =
       await _thongKeService.getDoanhThuTheoNgayTrongThang(_thang, _nam, maKhu: _selectedKhu!.id);
 
@@ -140,7 +140,7 @@ class ThongKeDoanhThuController with ChangeNotifier {
     await _loadKhuAndData();
   }
 
-  // Helper for chart: Find max daily revenue
+
   double findMaxDoanhThuNgay() {
     double max = 0;
     _doanhThuTheoNgay.forEach((ngay, doanhThu) {
@@ -148,10 +148,9 @@ class ThongKeDoanhThuController with ChangeNotifier {
         max = doanhThu;
       }
     });
-    return max > 0 ? max : 1000000; // Default value if no revenue
+    return max > 0 ? max : 1000000;
   }
 
-  // Helper for chart: Format currency for Y-axis
   String formatCurrencyShort(double value) {
     if (value >= 1000000) {
       return '${(value / 1000000).toStringAsFixed(1)}M';

@@ -144,7 +144,6 @@ class HoaDonService {
         return [];
       }
 
-      // Define start and end of the selected date
       final startOfDay = DateTime(date.year, date.month, date.day);
       final endOfDay = startOfDay.add(Duration(days: 1));
 
@@ -170,8 +169,6 @@ class HoaDonService {
       if (maKhuList.isEmpty) {
         return [];
       }
-
-      // Define start and end of the selected date
       final startOfDay = DateTime(date.year, date.month, date.day);
       final endOfDay = startOfDay.add(Duration(days: 1));
 

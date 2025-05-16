@@ -13,7 +13,6 @@ class San {
     required this.trangThai,
   });
 
-  // Chuyển từ Map (Firebase) sang đối tượng San
   factory San.fromMap(Map<String, dynamic> data, String documentId) {
     return San(
       id: documentId,
@@ -24,7 +23,7 @@ class San {
     );
   }
 
-  // Chuyển đối tượng San thành Map để lưu lên Firebase
+
   Map<String, dynamic> toMap() {
     return {
       'MA': ma,

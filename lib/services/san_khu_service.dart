@@ -10,26 +10,22 @@ class SanKhuService {
   final CollectionReference _lichSanCollection = FirebaseFirestore.instance.collection('SAN_KHUNGGIO');
   final CollectionReference _phanKhuCollection = FirebaseFirestore.instance.collection('PHAN_KHU');
 
-  //  Lấy danh sách khu theo MA_NGUOI_DUNG
+
   Future<List<Khu>> getKhuByUserId(String userId) async {
     try {
-      // Bước 1: Lấy các bản ghi từ collection PHAN_KHU theo MA_NGUOI_DUNG
       QuerySnapshot phanKhuSnapshot = await _phanKhuCollection
           .where('MA_NGUOI_DUNG', isEqualTo: userId)
           .get();
 
-      // Nếu không có bản ghi nào, trả về danh sách rỗng
       if (phanKhuSnapshot.docs.isEmpty) {
         print("Không có khu nào được phân cho người dùng $userId");
         return [];
       }
 
-      // Bước 2: Lấy danh sách MA_KHU từ các bản ghi PHAN_KHU
       List<String> maKhuList = phanKhuSnapshot.docs
           .map((doc) => (doc.data() as Map<String, dynamic>)['MA_KHU'] as String)
           .toList();
 
-      // Bước 3: Lấy thông tin chi tiết của từng KHU
       List<Khu> khuList = [];
 
       for (String maKhu in maKhuList) {
@@ -47,7 +43,7 @@ class SanKhuService {
     }
   }
 
-  //  Lấy danh sách khu
+
   Future<List<Khu>> getAllKhu() async {
     try {
       QuerySnapshot snapshot = await _khuCollection.get();
@@ -58,7 +54,7 @@ class SanKhuService {
     }
   }
 
-  //  Lấy danh sách sân
+
   Future<List<San>> getAllSan() async {
     try {
       QuerySnapshot snapshot = await _sanCollection.get();
@@ -69,7 +65,7 @@ class SanKhuService {
     }
   }
 
-  //  Lấy danh sách sân theo khu
+
   Future<List<San>> getSanByKhu(String maKhu) async {
     try {
       QuerySnapshot snapshot = await _sanCollection.where('MA_KHU', isEqualTo: maKhu).get();
@@ -80,7 +76,7 @@ class SanKhuService {
     }
   }
 
-  //  Lấy danh sách khung giờ của một sân theo ngày
+
   Future<List<SanKhungGio>> getKhungGioBySan(String maSan, String ngay) async {
     try {
       QuerySnapshot snapshot = await _lichSanCollection
@@ -95,10 +91,9 @@ class SanKhuService {
     }
   }
 
-  //  Thêm tất cả khung giờ cho một sân trong ngày
   Future<void> addAllKhungGioForSan(String maSan, String ngay) async {
     try {
-      // Danh sách khung giờ từ 06:00 - 22:00
+
       List<KhungGio> khungGios = [
         KhungGio(gioBatDau: "06:00", gioKetThuc: "07:00", trangThai: 0,giaTien: 100000),
         KhungGio(gioBatDau: "07:00", gioKetThuc: "08:00", trangThai: 0,giaTien: 100000),
@@ -118,11 +113,10 @@ class SanKhuService {
         KhungGio(gioBatDau: "21:00", gioKetThuc: "22:00", trangThai: 0,giaTien: 100000),
       ];
 
-      // Tạo document mới trong Firestore
-      SanKhungGio sanKhungGio = SanKhungGio(maSan: maSan, ngay: ngay, khungGio: khungGios);
 
+      SanKhungGio sanKhungGio = SanKhungGio(maSan: maSan, ngay: ngay, khungGio: khungGios);
       await _lichSanCollection
-          .doc("${maSan}_$ngay") // Đặt ID document theo dạng "SAN_001_2025-03-30"
+          .doc("${maSan}_$ngay")
           .set(sanKhungGio.toMap());
 
       print(" Đã thêm tất cả khung giờ cho sân $maSan vào ngày $ngay");
@@ -131,26 +125,21 @@ class SanKhuService {
     }
   }
 
-  //  Cập nhật trạng thái khung giờ
+
   Future<void> updateKhungGioStatus(String maSan, String ngay, int khungGioIndex, int newStatus) async {
     try {
-      // Reference to the document
-      DocumentReference documentRef = _lichSanCollection.doc("${maSan}_$ngay");
 
-      // Get current document data
+      DocumentReference documentRef = _lichSanCollection.doc("${maSan}_$ngay");
       DocumentSnapshot docSnapshot = await documentRef.get();
       if (!docSnapshot.exists) {
         print(" Document ${maSan}_$ngay does not exist");
         return;
       }
 
-      // Extract data
       Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
       List<dynamic> khungGioList = data["KHUNG_GIO"] as List<dynamic>;
 
-      // Update the specific time slot
       if (khungGioIndex >= 0 && khungGioIndex < khungGioList.length) {
-        // Ensure newStatus is valid (0, 1, or 2)
         if (newStatus >= 0 && newStatus <= 2) {
           khungGioList[khungGioIndex]["trangThai"] = newStatus;
 
@@ -171,16 +160,8 @@ class SanKhuService {
   //  Thêm sân mới
   Future<String?> addSan(San san) async {
     try {
-      // // Kiểm tra xem khu có tồn tại không
-      // DocumentSnapshot khuDoc = await _khuCollection.doc(san.maKhu).get();
-      // if (!khuDoc.exists) {
-      //   print(" Khu với mã ${san.maKhu} không tồn tại");
-      //   return null;
-      // }
-
-      // Thêm sân mới vào Firestore
       DocumentReference docRef = await _sanCollection.add(san.toMap());
-      print("✅ Đã thêm sân mới với ID: ${docRef.id}");
+      print(" Đã thêm sân mới với ID: ${docRef.id}");
       return docRef.id;
     } catch (e) {
       print(" Lỗi khi thêm sân mới: $e");
@@ -191,21 +172,18 @@ class SanKhuService {
   //  Cập nhật thông tin sân
   Future<bool> updateSan(String sanId, San san) async {
     try {
-      // Kiểm tra xem sân có tồn tại không
       DocumentSnapshot sanDoc = await _sanCollection.doc(sanId).get();
       if (!sanDoc.exists) {
         print(" Sân với ID $sanId không tồn tại");
         return false;
       }
 
-      // Kiểm tra xem khu có tồn tại không nếu có cập nhật mã khu
       DocumentSnapshot khuDoc = await _khuCollection.doc(san.maKhu).get();
       if (!khuDoc.exists) {
         print(" Khu với mã ${san.maKhu} không tồn tại");
         return false;
       }
 
-      // Cập nhật thông tin sân
       await _sanCollection.doc(sanId).update(san.toMap());
       print(" Đã cập nhật thông tin sân với ID: $sanId");
       return true;
@@ -215,32 +193,24 @@ class SanKhuService {
     }
   }
 
-  //  Xóa sân
+
   Future<bool> deleteSan(String sanId) async {
     try {
-      // Kiểm tra xem sân có tồn tại không
       DocumentSnapshot sanDoc = await _sanCollection.doc(sanId).get();
       if (!sanDoc.exists) {
         print(" Sân với ID $sanId không tồn tại");
         return false;
       }
 
-      // Xóa tất cả khung giờ liên quan đến sân này
       QuerySnapshot lichSanDocs = await _lichSanCollection
           .where('MA_SAN', isEqualTo: sanId)
           .get();
-
-      // Batch delete để xóa nhiều documents cùng lúc
       WriteBatch batch = FirebaseFirestore.instance.batch();
 
       for (var doc in lichSanDocs.docs) {
         batch.delete(doc.reference);
       }
-
-      // Xóa sân
       batch.delete(_sanCollection.doc(sanId));
-
-      // Commit batch
       await batch.commit();
 
       print(" Đã xóa sân với ID: $sanId và các khung giờ liên quan");
@@ -251,7 +221,7 @@ class SanKhuService {
     }
   }
 
-  //  Cập nhật trạng thái sân
+
   Future<bool> updateSanStatus(String sanId, bool newStatus) async {
     try {
       await _sanCollection.doc(sanId).update({'TRANG_THAI': newStatus});

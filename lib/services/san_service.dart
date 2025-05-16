@@ -4,7 +4,7 @@ import '../models/san.dart';
 class SanService {
   final CollectionReference sanCollection = FirebaseFirestore.instance.collection('SAN');
 
-  // Lấy danh sách sân
+
   Future<List<San>> getAllSan() async {
     try {
       QuerySnapshot snapshot = await sanCollection.get();
@@ -15,7 +15,7 @@ class SanService {
     }
   }
 
-  // Lấy danh sách sân theo khu
+
   Future<List<San>> getSanByKhu(String maKhu) async {
     try {
       QuerySnapshot snapshot = await sanCollection.where('MA_KHU', isEqualTo: maKhu).get();
@@ -26,7 +26,7 @@ class SanService {
     }
   }
 
-  // Thêm sân mới
+
   Future<void> addSan(San san) async {
     try {
       await sanCollection.add(san.toMap());
@@ -35,7 +35,7 @@ class SanService {
     }
   }
 
-  // Cập nhật thông tin sân
+
   Future<void> updateSan(San san) async {
     try {
       await sanCollection.doc(san.id).update(san.toMap());
@@ -44,7 +44,7 @@ class SanService {
     }
   }
 
-  // Xóa sân
+
   Future<void> deleteSan(String sanId) async {
     try {
       await sanCollection.doc(sanId).delete();

@@ -126,14 +126,14 @@ class HoaDonController with ChangeNotifier {
       print('Fetching hoa don for khu: ${_selectedKhu!.id}, date: $_selectedDate, tab: $_currentTabIndex');
       List<HoaDon> result;
       switch (_currentTabIndex) {
-        case 0: // All invoices
+        case 0:
           result = await _hoaDonService.getHoaDonByKhuListAndDate([_selectedKhu!.id], _selectedDate!);
           break;
-        case 1: // Pending
+        case 1:
           result = await _hoaDonService.getHoaDonByKhuListStatusAndDate(
               [_selectedKhu!.id], 'Chờ xác nhận', _selectedDate!);
           break;
-        case 2: // Completed
+        case 2:
           result = await _hoaDonService.getHoaDonByKhuListStatusAndDate(
               [_selectedKhu!.id], 'Đã duyệt', _selectedDate!);
           break;
