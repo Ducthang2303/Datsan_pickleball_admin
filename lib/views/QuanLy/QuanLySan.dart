@@ -22,12 +22,12 @@ class QuanLySanScreen extends StatelessWidget {
             appBar: AppBar(
               title: Text(
                 "Quản lý sân",
-                style: TextStyle(color: AppColors.textColor),
+                style: TextStyle(color: AppColors.textColor,fontWeight: FontWeight.w600,),
               ),
               backgroundColor: AppColors.Blue,
             ),
             body: controller.isLoading
-                ? const Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator( valueColor: AlwaysStoppedAnimation<Color>(AppColors.Blue),))
                 : Padding(
               padding: const EdgeInsets.all(16),
               child: ListView(
@@ -371,8 +371,6 @@ class QuanLySanScreen extends StatelessWidget {
   }
 
   Future<void> _showAddSanDialog(BuildContext context, SanController controller) async {
-    final TextEditingController maController = TextEditingController();
-    final TextEditingController tenController = TextEditingController();
     String? selectedKhu = controller.selectedKhuMa;
 
     return showDialog<void>(
@@ -416,34 +414,6 @@ class QuanLySanScreen extends StatelessWidget {
                       selectedKhu = newValue;
                     },
                   ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    controller: maController,
-                    cursorColor: AppColors.Blue,
-                    decoration: InputDecoration(
-                      labelText: 'Mã sân',
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.Blue, width: 2),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey, width: 1),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    controller: tenController,
-                    cursorColor: AppColors.Blue,
-                    decoration: InputDecoration(
-                      labelText: 'Tên sân',
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.Blue, width: 2),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey, width: 1),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -460,18 +430,18 @@ class QuanLySanScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 ),
                 onPressed: () async {
-                  if (maController.text.isEmpty || tenController.text.isEmpty || selectedKhu == null) {
+                  if (selectedKhu == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Vui lòng điền đầy đủ thông tin')),
+                      const SnackBar(content: Text('Vui lòng chọn khu')),
                     );
                     return;
                   }
 
                   San newSan = San(
                     id: '',
-                    ma: maController.text,
+                    ma: '', // ma will be generated in SanKhuService
                     maKhu: selectedKhu!,
-                    ten: tenController.text,
+                    ten: '', // ten will be generated in SanKhuService
                     trangThai: true,
                   );
 

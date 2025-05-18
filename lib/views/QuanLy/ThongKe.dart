@@ -22,7 +22,7 @@ class _ThongKeDoanhThuScreenState extends State<ThongKeDoanhThuScreen> {
           return Scaffold(
             appBar: AppBar(
               backgroundColor: AppColors.Blue,
-              title: Text('Thống kê doanh thu', style: TextStyle(color: AppColors.textColor)),
+              title: Text('Thống kê doanh thu', style: TextStyle(color: AppColors.textColor,fontWeight: FontWeight.w600,)),
               actions: [
                 IconButton(
                   icon: Icon(Icons.calendar_month),
@@ -32,7 +32,7 @@ class _ThongKeDoanhThuScreenState extends State<ThongKeDoanhThuScreen> {
               ],
             ),
             body: controller.isLoading
-                ? Center(child: CircularProgressIndicator())
+                ? Center(child: CircularProgressIndicator( valueColor: AlwaysStoppedAnimation<Color>(AppColors.Blue),))
                 : RefreshIndicator(
               onRefresh: controller.refreshData,
               child: SingleChildScrollView(

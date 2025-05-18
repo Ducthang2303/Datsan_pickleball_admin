@@ -190,7 +190,7 @@ class _HoaDonListScreenState extends State<DuyetdonScreen> with SingleTickerProv
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Duyệt đơn', style: TextStyle(color: AppColors.textColor)),
+        title: Text('Duyệt đơn', style: TextStyle(color: AppColors.textColor,fontWeight: FontWeight.w600,)),
         backgroundColor: Color(0xFF0047AB),
       ),
       body: Column(

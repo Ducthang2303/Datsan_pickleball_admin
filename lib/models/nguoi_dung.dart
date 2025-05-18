@@ -1,11 +1,12 @@
 class NguoiDung {
   final String id;
   final String email;
-  late final String hoTen;
+  final String hoTen;
   final String tenDangNhap;
-  late final String soDienThoai;
+  final String soDienThoai;
   final String vaiTro;
-  late final String? anhDaiDien;
+  final String? anhDaiDien;
+  final String trangThai; // Changed from isLocked to trangThai
 
   NguoiDung({
     required this.id,
@@ -14,7 +15,8 @@ class NguoiDung {
     required this.tenDangNhap,
     required this.soDienThoai,
     required this.vaiTro,
-    required this.anhDaiDien,
+    this.anhDaiDien,
+    required this.trangThai,
   });
 
   factory NguoiDung.fromMap(String id, Map<String, dynamic> json) {
@@ -23,9 +25,22 @@ class NguoiDung {
       email: json['EMAIL'] ?? '',
       hoTen: json['HO_TEN'] ?? '',
       tenDangNhap: json['TEN_DANG_NHAP'] ?? '',
-      soDienThoai: json['SO_DIEN_THOAI']?? '',
+      soDienThoai: json['SO_DIEN_THOAI'] ?? '',
       vaiTro: json['VAI_TRO'] ?? 'user',
-      anhDaiDien: json['ANH_DAI_DIEN'] ?? '',
+      anhDaiDien: json['ANH_DAI_DIEN'],
+      trangThai: json['TRANG_THAI'] ?? (json['IS_LOCKED'] == true ? 'locked' : 'active'),
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'EMAIL': email,
+      'HO_TEN': hoTen,
+      'TEN_DANG_NHAP': tenDangNhap,
+      'SO_DIEN_THOAI': soDienThoai,
+      'VAI_TRO': vaiTro,
+      'ANH_DAI_DIEN': anhDaiDien,
+      'TRANG_THAI': trangThai,
+    };
   }
 }
